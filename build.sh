@@ -1,10 +1,8 @@
 gcc -o main.o -c main.c;
-gcc -o memory.o -c memory.c;
-gcc -o driver main.o memory.o;
+gcc -o memory.o -c -fpic memory.c;
+gcc -o driver main.o memory.o -ldl;
 
-gcc main.c memory.c -o driver;
-
-gcc -c -fpic plugin1.c;
-gcc plugin1.o memory.o -shared -o libplugin1.so;
+gcc -o plugin1.o -c -fpic plugin1.c;
+gcc -o libplugin1.so plugin1.o memory.o -shared;
 
 exit $@;
