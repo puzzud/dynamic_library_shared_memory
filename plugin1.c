@@ -1,6 +1,7 @@
-#include <stdio.h>
-
+#include "plugin.h"
 #include "memory.h"
+
+#include <stdio.h>
 
 void ReceiveSystemMemory(char* systemMemory)
 {

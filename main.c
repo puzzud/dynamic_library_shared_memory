@@ -1,7 +1,8 @@
+#include "memory.h"
+#include "plugin.h"
+
 #include <stdio.h>
 #include <dlfcn.h>
-
-#include "memory.h"
 
 int Initialize()
 {
@@ -38,7 +39,7 @@ int main()
   void (*receiveSystemMemoryFunction)(char*);
   void (*executeCommandFunction)(void);
   
-  libraryHandle = dlopen("libplugin1.so", RTLD_LAZY);
+  libraryHandle = dlopen("libplugin1.so", RTLD_NOW);
   
   if (libraryHandle == NULL)
   {
