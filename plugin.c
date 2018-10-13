@@ -9,7 +9,8 @@ int LoadPlugin(PluginInterface* pluginInterface)
 {
   if (pluginInterface == NULL)
   {
-    // TODO: Error condition.
+    // Error condition.
+    
     return 1;
   }
   
@@ -28,6 +29,8 @@ int LoadPlugin(PluginInterface* pluginInterface)
   
   if (pluginInterface->executeCommandFunction == NULL)
   {
+    UnloadPlugin(pluginInterface);
+    
     return 1;
   }
   
@@ -36,6 +39,8 @@ int LoadPlugin(PluginInterface* pluginInterface)
     
   if (pluginInterface->receiveSystemMemoryFunction == NULL)
   {
+    UnloadPlugin(pluginInterface);
+    
     return 1;
   }
   
@@ -66,9 +71,12 @@ void UnloadPlugin(PluginInterface* pluginInterface)
 {
   if (pluginInterface == NULL)
   {
-    // TODO: Error condition.
+    // Error condition.
+    
     return;
   }
   
   dlclose(pluginInterface->libraryHandle);
+  
+  pluginInterface->libraryHandle = NULL;
 }

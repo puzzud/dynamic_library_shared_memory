@@ -34,7 +34,14 @@ int InitializePlugin(PluginInterface* pluginInterface)
   
   strcpy(pluginInterface->fileName, "libplugin1.so");
   
-  return LoadPlugin(pluginInterface);
+  LoadPlugin(pluginInterface);
+  
+  if (pluginInterface->libraryHandle == NULL)
+  {
+    return 1;
+  }
+  
+  return 0;
 }
 
 void Shutdown(PluginInterface* pluginInterface)
