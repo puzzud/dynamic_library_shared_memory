@@ -55,6 +55,25 @@ void MemoryCheckTest(unsigned int address)
   printf("\n");
 }
 
+void RunTest(PluginInterface* pluginInterface)
+{
+  if (pluginInterface == NULL)
+  {
+    printf("No plugin interface provided for test.");
+    printf("\n");
+    
+    return;
+  }
+  
+  // Run test
+  SetByteSystemMemory(0xd1ef, 25);
+  MemoryCheckTest(0xd1ef);
+  
+  pluginInterface->receiveSystemMemoryFunction(SystemMemory);
+  pluginInterface->executeCommandFunction();
+  MemoryCheckTest(0xd1ef);
+}
+
 int main()
 {
   PluginInterface pluginInterface;
@@ -67,13 +86,7 @@ int main()
     return 1;
   }
   
-  // Run test
-  SetByteSystemMemory(0xd1ef, 25);
-  MemoryCheckTest(0xd1ef);
-  
-  pluginInterface.receiveSystemMemoryFunction(SystemMemory);
-  pluginInterface.executeCommandFunction();
-  MemoryCheckTest(0xd1ef);
+  RunTest(&pluginInterface);
   
   Shutdown(&pluginInterface);
   
