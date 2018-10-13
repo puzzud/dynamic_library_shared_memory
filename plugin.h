@@ -11,6 +11,7 @@ typedef struct
 PluginInterface;
 
 int LoadPlugin(PluginInterface* pluginInterface);
+void** LoadPluginSymbol(PluginInterface* pluginInterface, char symbolName[]);
 void UnloadPlugin(PluginInterface* pluginInterface);
 
 #endif
