@@ -3,11 +3,6 @@
 
 #include <stdio.h>
 
-void ReceiveSystemMemory(char* systemMemory)
-{
-  SystemMemory = systemMemory;
-}
-
 void ExecuteCommand()
 {
   char value;
