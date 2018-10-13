@@ -5,7 +5,7 @@
 
 char* SystemMemory;
 
-int LoadPlugin(char pluginFileName[], PluginInterface* pluginInterface)
+int LoadPlugin(PluginInterface* pluginInterface)
 {
   if (pluginInterface == NULL)
   {
@@ -13,11 +13,11 @@ int LoadPlugin(char pluginFileName[], PluginInterface* pluginInterface)
     return 1;
   }
   
-  pluginInterface->libraryHandle = dlopen(pluginFileName, RTLD_NOW);
+  pluginInterface->libraryHandle = dlopen(pluginInterface->fileName, RTLD_NOW);
   
   if (pluginInterface->libraryHandle == NULL)
   {
-    printf("Failed to load library file.");
+    printf("Failed to load library file '%s'.", pluginInterface->fileName);
     printf("\n");
     
     return 1;

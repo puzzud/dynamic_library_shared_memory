@@ -2,6 +2,7 @@
 #include "plugin.h"
 
 #include <stdio.h>
+#include <string.h>
 
 int Initialize()
 {
@@ -35,7 +36,9 @@ void MemoryCheckTest(unsigned int address)
 int main()
 {
   PluginInterface pluginInterface;
-  LoadPlugin("libplugin1.so", &pluginInterface);
+  strcpy(pluginInterface.fileName, "libplugin1.so");
+  
+  LoadPlugin(&pluginInterface);
   
   if (Initialize() != 0)
   {

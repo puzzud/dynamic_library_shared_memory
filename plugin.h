@@ -2,6 +2,7 @@
 
 typedef struct
 {
+  char fileName[32];
   void* libraryHandle;
   
   void (*receiveSystemMemoryFunction)(char*);
@@ -9,7 +10,7 @@ typedef struct
 }
 PluginInterface;
 
-int LoadPlugin(char pluginFileName[], PluginInterface* pluginInterface);
+int LoadPlugin(PluginInterface* pluginInterface);
 void UnloadPlugin(PluginInterface* pluginInterface);
 
 #endif
