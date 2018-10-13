@@ -4,7 +4,9 @@
 #include <stdio.h>
 #include <string.h>
 
-int Initialize()
+int InitializePlugin(PluginInterface* pluginInterface);
+
+int Initialize(PluginInterface* pluginInterface)
 {
   printf("*Initialize*");
   printf("\n");
@@ -14,7 +16,25 @@ int Initialize()
     return 1;
   }
   
+  if (InitializePlugin(pluginInterface) != 0)
+  {
+    return 1;
+  }
+  
   return 0;
+}
+
+int InitializePlugin(PluginInterface* pluginInterface)
+{
+  if (pluginInterface == NULL)
+  {
+    // TODO: Error condition.
+    return 1;
+  }
+  
+  strcpy(pluginInterface->fileName, "libplugin1.so");
+  
+  return LoadPlugin(pluginInterface);
 }
 
 void Shutdown()
@@ -36,11 +56,8 @@ void MemoryCheckTest(unsigned int address)
 int main()
 {
   PluginInterface pluginInterface;
-  strcpy(pluginInterface.fileName, "libplugin1.so");
   
-  LoadPlugin(&pluginInterface);
-  
-  if (Initialize() != 0)
+  if (Initialize(&pluginInterface) != 0)
   {
     printf("Failed to initialize system.");
     printf("\n");
