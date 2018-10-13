@@ -2,7 +2,6 @@
 #include "plugin.h"
 
 #include <stdio.h>
-#include <dlfcn.h>
 
 int Initialize()
 {
@@ -35,39 +34,8 @@ void MemoryCheckTest(unsigned int address)
 
 int main()
 {
-  void* libraryHandle = NULL;
-  void (*receiveSystemMemoryFunction)(char*);
-  void (*executeCommandFunction)(void);
-  
-  libraryHandle = dlopen("libplugin1.so", RTLD_NOW);
-  
-  if (libraryHandle == NULL)
-  {
-    printf("Failed to load library.");
-    printf("\n");
-    
-    return 1;
-  }
-  
-  *(void**)(&executeCommandFunction) = dlsym(libraryHandle, "ExecuteCommand");
-  
-  if (executeCommandFunction == NULL)
-  {
-    printf("Failed to load function from library.");
-    printf("\n");
-    
-    return 1;
-  }
-  
-  *(void**)(&receiveSystemMemoryFunction) = dlsym(libraryHandle, "ReceiveSystemMemory");
-  
-  if (receiveSystemMemoryFunction == NULL)
-  {
-    printf("Failed to load function from library.");
-    printf("\n");
-    
-    return 1;
-  }
+  PluginInterface pluginInterface;
+  LoadPlugin("libplugin1.so", &pluginInterface);
   
   if (Initialize() != 0)
   {
@@ -81,11 +49,11 @@ int main()
   SetByteSystemMemory(0xd1ef, 25);
   MemoryCheckTest(0xd1ef);
   
-  receiveSystemMemoryFunction(SystemMemory);
-  executeCommandFunction();
+  pluginInterface.receiveSystemMemoryFunction(SystemMemory);
+  pluginInterface.executeCommandFunction();
   MemoryCheckTest(0xd1ef);
   
-  dlclose(libraryHandle);
+  UnloadPlugin(&pluginInterface);
   
   Shutdown();
   
