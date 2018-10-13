@@ -76,7 +76,6 @@ void RunTest(PluginInterface* pluginInterface)
   SetByteSystemMemory(0xd1ef, 25);
   MemoryCheckTest(0xd1ef);
   
-  pluginInterface->receiveSystemMemoryFunction(SystemMemory);
   pluginInterface->executeCommandFunction();
   MemoryCheckTest(0xd1ef);
 }

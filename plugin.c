@@ -1,9 +1,8 @@
 #include "plugin.h"
+#include "memory.h"
 
 #include <stdio.h>
 #include <dlfcn.h>
-
-char* SystemMemory;
 
 int LoadPlugin(PluginInterface* pluginInterface)
 {
@@ -24,20 +23,21 @@ int LoadPlugin(PluginInterface* pluginInterface)
     return 1;
   }
   
-  *(void**)(&pluginInterface->executeCommandFunction) =
-    LoadPluginSymbol(pluginInterface, "ExecuteCommand");
-  
-  if (pluginInterface->executeCommandFunction == NULL)
+  if (ResolvePluginSystemMemory(pluginInterface) != 0)
   {
     UnloadPlugin(pluginInterface);
+    
+    printf("Failed to resolve system memory for library '%s'.",
+      pluginInterface->fileName);
+    printf("\n");
     
     return 1;
   }
   
-  *(void**)(&pluginInterface->receiveSystemMemoryFunction) =
-    LoadPluginSymbol(pluginInterface, "ReceiveSystemMemory");
-    
-  if (pluginInterface->receiveSystemMemoryFunction == NULL)
+  *(void**)(&pluginInterface->executeCommandFunction) =
+    LoadPluginSymbol(pluginInterface, "ExecuteCommand");
+  
+  if (pluginInterface->executeCommandFunction == NULL)
   {
     UnloadPlugin(pluginInterface);
     
@@ -65,6 +65,25 @@ void** LoadPluginSymbol(PluginInterface* pluginInterface, char symbolName[])
   }
   
   return symbol;
+}
+
+int ResolvePluginSystemMemory(PluginInterface* pluginInterface)
+{
+  if (pluginInterface == NULL)
+  {
+    return 1;
+  }
+  
+  char** systemMemory = (char**)LoadPluginSymbol(pluginInterface, "SystemMemory");
+  
+  if (systemMemory == NULL)
+  {
+    return  1;
+  }
+  
+  *systemMemory = SystemMemory;
+  
+  return 0;
 }
 
 void UnloadPlugin(PluginInterface* pluginInterface)
