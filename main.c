@@ -37,8 +37,10 @@ int InitializePlugin(PluginInterface* pluginInterface)
   return LoadPlugin(pluginInterface);
 }
 
-void Shutdown()
+void Shutdown(PluginInterface* pluginInterface)
 {
+  UnloadPlugin(pluginInterface);
+  
   FreeSystemMemory();
   
   printf("*Shutdown*");
@@ -73,9 +75,7 @@ int main()
   pluginInterface.executeCommandFunction();
   MemoryCheckTest(0xd1ef);
   
-  UnloadPlugin(&pluginInterface);
-  
-  Shutdown();
+  Shutdown(&pluginInterface);
   
   return 0;
 }
