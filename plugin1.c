@@ -1,7 +1,9 @@
 #include "plugin.h"
-#include "memory.h"
 
 #include <stdio.h>
+
+char (*GetByteSystemMemory)(unsigned int);
+void (*SetByteSystemMemory)(unsigned int, char);
 
 void ExecuteCommand()
 {

@@ -5,6 +5,6 @@ gcc -o bin/plugin.o -c plugin.c;
 gcc -o bin/driver bin/main.o bin/memory.o bin/plugin.o -ldl;
 
 gcc -o bin/plugin1.o -c -fpic plugin1.c;
-gcc -o bin/libplugin1.so bin/plugin1.o bin/memory.o -shared;
+gcc -o bin/libplugin1.so bin/plugin1.o -shared;
 
 exit $@;

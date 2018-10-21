@@ -74,14 +74,23 @@ int ResolvePluginSystemMemory(PluginInterface* pluginInterface)
     return 1;
   }
   
-  char** systemMemory = (char**)LoadPluginSymbol(pluginInterface, "SystemMemory");
+  void** getByteSystemMemory = (void**)LoadPluginSymbol(pluginInterface, "GetByteSystemMemory");
   
-  if (systemMemory == NULL)
+  if (getByteSystemMemory == NULL)
   {
     return  1;
   }
   
-  *systemMemory = SystemMemory;
+  *getByteSystemMemory = GetByteSystemMemory;
+  
+  void** setByteSystemMemory = (void**)LoadPluginSymbol(pluginInterface, "SetByteSystemMemory");
+  
+  if (setByteSystemMemory == NULL)
+  {
+    return  1;
+  }
+  
+  *setByteSystemMemory = SetByteSystemMemory;
   
   return 0;
 }
